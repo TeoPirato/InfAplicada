@@ -32,7 +32,8 @@ void setup()
 
 void loop()
 {
-  ReadingEventsHandler();  
+  if(ExitedFranjaBlanca())
+    MotorMovement(GetReadObjectiveCompartiment()); 
   
   // La cinta siempre está prendida
   digitalWrite(pinMotorCinta, HIGH);
@@ -43,8 +44,8 @@ void loop()
 // Es verdadero cuando en la anterior iteración hubo una franja blanca 
 bool inFranjaBlanca = false;
 
-// Lee el valor del código de barras después de la franja blanca
-void ReadingEventsHandler()
+// Devuelve verdaderlo cuando sale una franja blanca del codigo de barras
+bool ExitedFranjaBlanca()
 {
   // Detecta si entra una franja blanca al lector
   if (FranjaBlanca() && !inFranjaBlanca)
@@ -54,10 +55,10 @@ void ReadingEventsHandler()
   if (!FranjaBlanca() && inFranjaBlanca)  
   {    
     inFranjaBlanca = false;
-
-    // Se usan los valores de los infrarrojos después de una franja blanca    
-    MotorMovement(GetReadObjectiveCompartiment());
+    return true;
   }
+
+  return false;
 }
 
 // Devuelve verdadero si todos los infrarrojos leen blanco
