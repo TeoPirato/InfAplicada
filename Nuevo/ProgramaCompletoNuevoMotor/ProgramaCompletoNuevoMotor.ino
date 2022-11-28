@@ -1,10 +1,12 @@
+// Pines de motor de tambor
 const int motorPin1 = 8, motorPin2 = 9, motorPin3 = 10, motorPin4 = 11;
 
 // Variable para fijar la velocidad del motor (el retraso entre cada secuencia)
-int motorSpeed = 1200;  
+const int motorSpeed = 1200;  
 // Número de pasos por vuelta completa
-int stepsPerRevolution = 512;
-int lookup[8] = {B01000, B01100, B00100, B00110, B00010, B00011, B00001, B01001};
+const int stepsPerRevolution = 512;
+// Tabla de prendido de bobinas
+const int lookup[8] = {B01000, B01100, B00100, B00110, B00010, B00011, B00001, B01001};
 
 // Pines de infrarrojos y motor de la cinta
 const int pinIR = 4, pinIR1 = 5, pinIR2 = 6, pinMotorCinta = 7;
@@ -22,7 +24,6 @@ void setup()
   pinMode(pinIR1, INPUT);
   pinMode(pinIR2, INPUT);  
   pinMode(pinMotorCinta, OUTPUT);
-
   pinMode(motorPin1, OUTPUT);
   pinMode(motorPin2, OUTPUT);
   pinMode(motorPin3, OUTPUT);
@@ -56,9 +57,6 @@ void ReadingEventsHandler()
 
     // Se usan los valores de los infrarrojos después de una franja blanca    
     MotorMovement(GetReadObjectiveCompartiment());
-    
-    // Se puede poner un delay acá si hay ruido en los infrarrojos,
-    // para que no empieze a leer de nuevo justo después
   }
 }
 
@@ -91,19 +89,11 @@ void MotorMovement(int objectiveCompartiment)
 
   // Mover el tambor
   if(compartimentDelta >= 0)
-  {
     for(int i = 0; i < stepsPerRevolution * compartimentDelta / 4; i++)
-    {
       clockwise();
-    }
-  }
   else
-  {
     for(int i = 0; i < stepsPerRevolution * -compartimentDelta / 4; i++)
-    {
       anticlockwise();
-    }
-  }
 
   // Actualizar el compartimento actual
   currentCompartiment = objectiveCompartiment;
@@ -129,7 +119,7 @@ void clockwise()
   }
 }
 
-// Función secuencia giro
+// Función de secuencia de giro
 void setOutput(int out) 
 {
   digitalWrite(motorPin1, bitRead(lookup[out], 0));
