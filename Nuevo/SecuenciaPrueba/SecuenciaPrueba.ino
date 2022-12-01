@@ -34,13 +34,29 @@ void setup()
 
 void loop()
 {
-  if(ExitedFranjaBlanca())
-    MotorMovement(GetReadObjectiveCompartiment()); 
-  
   // La cinta siempre está prendida
   digitalWrite(pinMotorCinta, HIGH);
+
+  MotorMovement(1); 
+  delay(5000);
+
+  MotorMovement(2); 
+  delay(5000);
+
+  MotorMovement(3); 
+  delay(5000);
   
-  delay(deltaTime);
+  MotorMovement(2); 
+  delay(5000);  
+  
+  MotorMovement(1); 
+  delay(5000);  
+
+  MotorMovement(0); 
+  delay(5000);
+
+  MotorMovement(8); // Vuelta completa 2 veces
+  delay(5000);
 }
 
 // Es verdadero cuando en la anterior iteración hubo una franja blanca 
